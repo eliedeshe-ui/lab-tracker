@@ -8,259 +8,135 @@
   <meta name="apple-mobile-web-app-title" content="Lab Tracker" />
   <title>Lab Tracker</title>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg: #f7f7f5;
-      --surface: #ffffff;
-      --border: rgba(0,0,0,0.1);
-      --border-strong: rgba(0,0,0,0.18);
-      --text: #1a1a18;
-      --muted: #6b6b67;
-      --faint: #9a9a96;
-      --green-bg: #E1F5EE;
-      --green-text: #0F6E56;
-      --green-border: #1D9E75;
-      --red-bg: #FAECE7;
-      --red-text: #993C1D;
-      --red-border: #D85A30;
-      --blue-bg: #E6F1FB;
-      --blue-text: #185FA5;
-      --radius: 12px;
-      --radius-sm: 8px;
-    }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .app {
-      max-width: 480px;
-      margin: 0 auto;
-      padding: env(safe-area-inset-top, 16px) 16px env(safe-area-inset-bottom, 16px);
-      padding-top: max(env(safe-area-inset-top), 16px);
-      min-height: 100vh;
-    }
-    h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
-    h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.2px; }
-    p { line-height: 1.5; }
-    button {
-      font-family: inherit;
-      font-size: 14px;
-      font-weight: 500;
-      padding: 8px 16px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-strong);
-      background: var(--surface);
-      color: var(--text);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: opacity 0.15s;
-    }
-    button:active { opacity: 0.7; }
-    button.primary {
-      background: #1a1a18;
-      color: #fff;
-      border-color: #1a1a18;
-    }
-    button.danger { color: var(--red-text); border-color: var(--red-border); background: var(--red-bg); }
-    button:disabled { opacity: 0.4; cursor: not-allowed; }
-    input[type="text"], input[type="date"], input[type="number"], input[type="password"] {
-      font-family: inherit;
-      font-size: 15px;
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border-strong);
-      background: var(--surface);
-      color: var(--text);
-      width: 100%;
-      outline: none;
-      -webkit-appearance: none;
-    }
-    input:focus { border-color: #1a1a18; box-shadow: 0 0 0 3px rgba(0,0,0,0.06); }
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px;
-    }
-    .section-label {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-    .badge {
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 7px;
-      border-radius: 20px;
-      display: inline-block;
-    }
-    .badge-green { background: var(--green-bg); color: var(--green-text); }
-    .badge-red   { background: var(--red-bg);   color: var(--red-text); }
-    .chip {
-      font-size: 12px;
-      padding: 5px 12px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--muted);
-      cursor: pointer;
-      white-space: nowrap;
-      font-family: inherit;
-      font-weight: 500;
-    }
-    .chip.active { background: var(--text); color: #fff; border-color: var(--text); }
-    .marker-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      cursor: pointer;
-      transition: background 0.1s;
-    }
-    .marker-card:active { background: var(--bg); }
-    .marker-card.out-of-range { border-color: var(--red-border); }
-    .mono { font-family: 'SF Mono', 'Menlo', 'Courier New', monospace; }
-    .flex { display: flex; }
-    .flex-between { display: flex; justify-content: space-between; align-items: center; }
-    .gap-8 { gap: 8px; }
-    .gap-12 { gap: 12px; }
-    .mt-4 { margin-top: 4px; }
-    .mt-8 { margin-top: 8px; }
-    .mt-12 { margin-top: 12px; }
-    .mt-16 { margin-top: 16px; }
-    .mt-24 { margin-top: 24px; }
-    .loader {
-      display: inline-block;
-      width: 16px; height: 16px;
-      border: 2px solid rgba(0,0,0,0.15);
-      border-top-color: var(--text);
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      vertical-align: middle;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .empty-state {
-      text-align: center;
-      padding: 48px 24px;
-      border: 1.5px dashed var(--border-strong);
-      border-radius: var(--radius);
-      margin-top: 16px;
-    }
-    .divider { height: 1px; background: var(--border); margin: 16px 0; }
-    .back-btn {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 15px;
-      color: var(--blue-text);
-      font-weight: 500;
-      cursor: pointer;
-      margin-bottom: 16px;
-      display: block;
-    }
-    .stat-card {
-      flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 12px;
-      text-align: center;
-    }
-    .stat-num { font-size: 24px; font-weight: 600; }
-    .stat-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:#f5f5f3;color:#1a1a18;min-height:100vh}
+    .app{max-width:460px;margin:0 auto;padding:20px 16px 60px}
+    h1{font-size:22px;font-weight:700;letter-spacing:-0.3px}
+    h2{font-size:18px;font-weight:700;letter-spacing:-0.2px}
+    button{font-family:inherit;font-size:14px;font-weight:500;padding:9px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);background:#fff;color:#1a1a18;cursor:pointer}
+    button.primary{background:#1a1a18;color:#fff;border-color:#1a1a18}
+    button.danger{background:#fff0ee;color:#c0392b;border-color:#c0392b}
+    button:disabled{opacity:0.4;cursor:not-allowed}
+    input{font-family:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid rgba(0,0,0,0.18);background:#fff;color:#1a1a18;width:100%;outline:none;-webkit-appearance:none}
+    input:focus{border-color:#1a1a18}
+    .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.07em;color:#888;margin-bottom:8px}
+    .badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;display:inline-block}
+    .ok{background:#e0f5ec;color:#0a6640}
+    .out{background:#fdecea;color:#a93226}
+    .chip{font-size:12px;font-weight:500;padding:5px 13px;border-radius:20px;border:1px solid rgba(0,0,0,0.12);background:#fff;color:#666;cursor:pointer;white-space:nowrap;font-family:inherit}
+    .chip.active{background:#1a1a18;color:#fff;border-color:#1a1a18}
+    .mc{background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:10px;padding:12px;cursor:pointer}
+    .mc.oor{border-color:#c0392b}
+    .mono{font-family:'SF Mono',Menlo,monospace}
+    .between{display:flex;justify-content:space-between;align-items:center}
+    .g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+    .stat{background:#fff;border:1px solid rgba(0,0,0,0.09);border-radius:10px;padding:12px;text-align:center}
+    .sn{font-size:24px;font-weight:700}
+    .sl{font-size:11px;color:#888;margin-top:2px}
+    .empty{text-align:center;padding:48px 24px;border:1.5px dashed rgba(0,0,0,0.15);border-radius:12px;margin-top:16px}
+    .divider{height:1px;background:rgba(0,0,0,0.08);margin:20px 0}
+    .back{background:none;border:none;padding:0;font-size:15px;color:#0070f3;font-weight:500;cursor:pointer;margin-bottom:16px;display:block}
+    .loader{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .errbox{background:#fdecea;border:1px solid #c0392b;border-radius:10px;padding:10px 14px;font-size:13px;color:#a93226;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+    .chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:12px;scrollbar-width:none}
+    .chips::-webkit-scrollbar{display:none}
+    .field{background:#fff;border:1px solid rgba(0,0,0,0.1);border-radius:8px;padding:10px 12px}
+    .field.ex{border-color:#1D9E75}
+    .field label{font-size:10px;color:#888;display:flex;justify-content:space-between;margin-bottom:2px}
+    .field .unit{font-size:10px;color:#bbb;margin-bottom:4px}
+    .field input{font-size:13px;padding:4px 0;border:none;background:none;border-radius:0;width:100%}
+    .field input:focus{box-shadow:none}
+    .row-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.06)}
+    .chart-wrap{height:200px;margin:20px 0}
+    .hist{border-radius:12px;border:1px solid rgba(0,0,0,0.08);overflow:hidden}
+    .hist-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#fff;border-bottom:1px solid rgba(0,0,0,0.07)}
+    .hist-row:last-child{border-bottom:none}
   </style>
 </head>
 <body>
-<div id="root"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
-<script>
-const { useState, useEffect, useRef } = React;
-const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } = Recharts;
+<div id="root"><div style="padding:40px;text-align:center;color:#aaa;font-size:15px">Loading...</div></div>
 
-const MARKERS = {
-  glucose:      { label: 'Glucose',           unit: 'mg/dL',  cat: 'Metabolic',    low: 70,   high: 99,   dec: 0 },
-  hba1c:        { label: 'HbA1c',             unit: '%',       cat: 'Metabolic',    low: 4.0,  high: 5.6,  dec: 1 },
-  insulin:      { label: 'Insulin (fasting)',  unit: 'µIU/mL', cat: 'Metabolic',    low: 2.6,  high: 24.9, dec: 1 },
-  total_chol:   { label: 'Total Cholesterol',  unit: 'mg/dL',  cat: 'Lipids',       low: null, high: 199,  dec: 0 },
-  ldl:          { label: 'LDL',               unit: 'mg/dL',  cat: 'Lipids',       low: null, high: 99,   dec: 0 },
-  hdl:          { label: 'HDL',               unit: 'mg/dL',  cat: 'Lipids',       low: 40,   high: null, dec: 0 },
-  triglycerides:{ label: 'Triglycerides',      unit: 'mg/dL',  cat: 'Lipids',       low: null, high: 149,  dec: 0 },
-  testosterone: { label: 'Total Testosterone', unit: 'ng/dL',  cat: 'Hormones',     low: 300,  high: 1000, dec: 0 },
-  free_t:       { label: 'Free Testosterone',  unit: 'ng/dL',  cat: 'Hormones',     low: 9,    high: 30,   dec: 1 },
-  shbg:         { label: 'SHBG',              unit: 'nmol/L', cat: 'Hormones',     low: 10,   high: 57,   dec: 0 },
-  estradiol:    { label: 'Estradiol',          unit: 'pg/mL',  cat: 'Hormones',     low: 7.6,  high: 42.6, dec: 1 },
-  dhea:         { label: 'DHEA-S',            unit: 'µg/dL',  cat: 'Hormones',     low: 138,  high: 475,  dec: 0 },
-  tsh:          { label: 'TSH',               unit: 'mIU/L',  cat: 'Thyroid',      low: 0.4,  high: 4.0,  dec: 2 },
-  free_t3:      { label: 'Free T3',           unit: 'pg/mL',  cat: 'Thyroid',      low: 2.3,  high: 4.2,  dec: 1 },
-  free_t4:      { label: 'Free T4',           unit: 'ng/dL',  cat: 'Thyroid',      low: 0.8,  high: 1.8,  dec: 2 },
-  crp:          { label: 'hs-CRP',            unit: 'mg/L',   cat: 'Inflammation', low: null, high: 1.0,  dec: 1 },
-  homocysteine: { label: 'Homocysteine',       unit: 'µmol/L', cat: 'Inflammation', low: null, high: 15,   dec: 1 },
-  alt:          { label: 'ALT',               unit: 'U/L',    cat: 'Liver',        low: 7,    high: 56,   dec: 0 },
-  ast:          { label: 'AST',               unit: 'U/L',    cat: 'Liver',        low: 10,   high: 40,   dec: 0 },
-  ggt:          { label: 'GGT',               unit: 'U/L',    cat: 'Liver',        low: 8,    high: 61,   dec: 0 },
-  creatinine:   { label: 'Creatinine',         unit: 'mg/dL',  cat: 'Kidney',       low: 0.74, high: 1.35, dec: 2 },
-  bun:          { label: 'BUN',               unit: 'mg/dL',  cat: 'Kidney',       low: 7,    high: 25,   dec: 0 },
-  egfr:         { label: 'eGFR',              unit: 'mL/min', cat: 'Kidney',       low: 60,   high: null, dec: 0 },
-  vitd:         { label: 'Vitamin D',          unit: 'ng/mL',  cat: 'Nutrients',    low: 30,   high: 100,  dec: 0 },
-  ferritin:     { label: 'Ferritin',           unit: 'ng/mL',  cat: 'Nutrients',    low: 12,   high: 300,  dec: 0 },
-  b12:          { label: 'Vitamin B12',        unit: 'pg/mL',  cat: 'Nutrients',    low: 200,  high: 900,  dec: 0 },
-  wbc:          { label: 'WBC',               unit: 'K/µL',   cat: 'CBC',          low: 4.5,  high: 11.0, dec: 1 },
-  hemoglobin:   { label: 'Hemoglobin',         unit: 'g/dL',   cat: 'CBC',          low: 13.5, high: 17.5, dec: 1 },
-  hematocrit:   { label: 'Hematocrit',         unit: '%',       cat: 'CBC',          low: 40,   high: 52,   dec: 1 },
-  platelets:    { label: 'Platelets',          unit: 'K/µL',   cat: 'CBC',          low: 150,  high: 400,  dec: 0 },
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+var useState = React.useState;
+var useEffect = React.useEffect;
+var useRef = React.useRef;
+var el = React.createElement;
+
+var M = {
+  glucose:      {l:'Glucose',           u:'mg/dL',  c:'Metabolic',    lo:70,   hi:99,   d:0},
+  hba1c:        {l:'HbA1c',             u:'%',       c:'Metabolic',    lo:4.0,  hi:5.6,  d:1},
+  insulin:      {l:'Insulin (fasting)',  u:'µIU/mL', c:'Metabolic',    lo:2.6,  hi:24.9, d:1},
+  total_chol:   {l:'Total Cholesterol',  u:'mg/dL',  c:'Lipids',       lo:null, hi:199,  d:0},
+  ldl:          {l:'LDL',               u:'mg/dL',  c:'Lipids',       lo:null, hi:99,   d:0},
+  hdl:          {l:'HDL',               u:'mg/dL',  c:'Lipids',       lo:40,   hi:null, d:0},
+  triglycerides:{l:'Triglycerides',      u:'mg/dL',  c:'Lipids',       lo:null, hi:149,  d:0},
+  testosterone: {l:'Total Testosterone', u:'ng/dL',  c:'Hormones',     lo:300,  hi:1000, d:0},
+  free_t:       {l:'Free Testosterone',  u:'ng/dL',  c:'Hormones',     lo:9,    hi:30,   d:1},
+  shbg:         {l:'SHBG',              u:'nmol/L', c:'Hormones',     lo:10,   hi:57,   d:0},
+  estradiol:    {l:'Estradiol',          u:'pg/mL',  c:'Hormones',     lo:7.6,  hi:42.6, d:1},
+  dhea:         {l:'DHEA-S',            u:'µg/dL',  c:'Hormones',     lo:138,  hi:475,  d:0},
+  tsh:          {l:'TSH',               u:'mIU/L',  c:'Thyroid',      lo:0.4,  hi:4.0,  d:2},
+  free_t3:      {l:'Free T3',           u:'pg/mL',  c:'Thyroid',      lo:2.3,  hi:4.2,  d:1},
+  free_t4:      {l:'Free T4',           u:'ng/dL',  c:'Thyroid',      lo:0.8,  hi:1.8,  d:2},
+  crp:          {l:'hs-CRP',            u:'mg/L',   c:'Inflammation', lo:null, hi:1.0,  d:1},
+  homocysteine: {l:'Homocysteine',       u:'µmol/L', c:'Inflammation', lo:null, hi:15,   d:1},
+  alt:          {l:'ALT',               u:'U/L',    c:'Liver',        lo:7,    hi:56,   d:0},
+  ast:          {l:'AST',               u:'U/L',    c:'Liver',        lo:10,   hi:40,   d:0},
+  ggt:          {l:'GGT',               u:'U/L',    c:'Liver',        lo:8,    hi:61,   d:0},
+  creatinine:   {l:'Creatinine',         u:'mg/dL',  c:'Kidney',       lo:0.74, hi:1.35, d:2},
+  bun:          {l:'BUN',               u:'mg/dL',  c:'Kidney',       lo:7,    hi:25,   d:0},
+  egfr:         {l:'eGFR',              u:'mL/min', c:'Kidney',       lo:60,   hi:null, d:0},
+  vitd:         {l:'Vitamin D',          u:'ng/mL',  c:'Nutrients',    lo:30,   hi:100,  d:0},
+  ferritin:     {l:'Ferritin',           u:'ng/mL',  c:'Nutrients',    lo:12,   hi:300,  d:0},
+  b12:          {l:'Vitamin B12',        u:'pg/mL',  c:'Nutrients',    lo:200,  hi:900,  d:0},
+  wbc:          {l:'WBC',               u:'K/µL',   c:'CBC',          lo:4.5,  hi:11.0, d:1},
+  hemoglobin:   {l:'Hemoglobin',         u:'g/dL',   c:'CBC',          lo:13.5, hi:17.5, d:1},
+  hematocrit:   {l:'Hematocrit',         u:'%',       c:'CBC',          lo:40,   hi:52,   d:1},
+  platelets:    {l:'Platelets',          u:'K/µL',   c:'CBC',          lo:150,  hi:400,  d:0}
 };
 
-const CATS_ORDER = ['Metabolic','Lipids','Hormones','Thyroid','Inflammation','Liver','Kidney','Nutrients','CBC'];
-const MARKERS_BY_CAT = {};
-CATS_ORDER.forEach(c => { MARKERS_BY_CAT[c] = []; });
-Object.keys(MARKERS).forEach(k => { MARKERS_BY_CAT[MARKERS[k].cat].push(k); });
-const ALL_CATS = ['All', ...CATS_ORDER];
+var CATS = ['Metabolic','Lipids','Hormones','Thyroid','Inflammation','Liver','Kidney','Nutrients','CBC'];
+var BY_CAT = {};
+CATS.forEach(function(c){ BY_CAT[c] = []; });
+Object.keys(M).forEach(function(k){ BY_CAT[M[k].c].push(k); });
 
-function getStatus(key, val) {
-  if (val == null || val === '') return 'none';
-  const { low, high } = MARKERS[key];
-  if (low != null && val < low) return 'low';
-  if (high != null && val > high) return 'high';
-  return 'normal';
+function getStatus(k, v) {
+  if (v == null) return 'none';
+  if (M[k].lo != null && v < M[k].lo) return 'low';
+  if (M[k].hi != null && v > M[k].hi) return 'high';
+  return 'ok';
 }
 
-function fmtDate(ds) {
-  if (!ds) return '';
-  return new Date(ds + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+function fmtDate(s) {
+  if (!s) return '';
+  return new Date(s + 'T12:00:00').toLocaleDateString('en-US', {month:'short', year:'numeric'});
 }
 
-const EXTRACT_PROMPT = `You are a medical lab report parser. Extract all lab values from this report.
+function getKey() { return localStorage.getItem('lab_ak') || ''; }
+function setKey(v) { localStorage.setItem('lab_ak', v); }
+function getSessions() { try { return JSON.parse(localStorage.getItem('lab_sessions') || '[]'); } catch(e) { return []; } }
+function saveSessions(arr) { localStorage.setItem('lab_sessions', JSON.stringify(arr)); }
 
-Return ONLY a valid JSON object (no markdown, no backticks, no explanation):
-{
-  "date": "YYYY-MM-DD or null",
-  "values": { "marker_key": numeric_value }
-}
+var EXTRACT_PROMPT = [
+  'You are a medical lab report parser. Extract all lab values from this document.',
+  'Return ONLY a valid JSON object with no extra text, no markdown, no backticks:',
+  '{"date":"YYYY-MM-DD or null","values":{"key":number}}',
+  'Map results to these keys:'
+].join('\n') + '\n' +
+Object.keys(M).map(function(k){ return k + ': ' + M[k].l + ' (' + M[k].u + ')'; }).join('\n') +
+'\nOnly include markers present in the report. Convert units if needed. Return ONLY the JSON object.';
 
-Map results to these keys:
-${Object.entries(MARKERS).map(([k,m]) => `  ${k}: ${m.label} (${m.unit})`).join('\n')}
-
-Rules:
-- Only include markers clearly present with numeric values
-- Convert to the units listed if needed (e.g. testosterone nmol/L × 28.84 = ng/dL)
-- Return ONLY the JSON object`;
-
-async function callClaude(base64, mediaType, apiKey) {
-  const block = mediaType === 'application/pdf'
-    ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
-    : { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } };
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+function callAPI(b64, mime, apiKey) {
+  var block = mime === 'application/pdf'
+    ? {type:'document', source:{type:'base64', media_type:'application/pdf', data:b64}}
+    : {type:'image', source:{type:'base64', media_type:mime, data:b64}};
+  return fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -271,408 +147,329 @@ async function callClaude(base64, mediaType, apiKey) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1000,
-      messages: [{ role: 'user', content: [block, { type: 'text', text: EXTRACT_PROMPT }] }]
+      messages: [{role:'user', content:[block, {type:'text', text:EXTRACT_PROMPT}]}]
     })
+  }).then(function(r) {
+    return r.json().then(function(d) {
+      if (!r.ok) throw new Error((d.error && d.error.message) || 'API error ' + r.status);
+      var txt = '';
+      (d.content || []).forEach(function(b){ if (b.type === 'text') txt = b.text; });
+      return JSON.parse(txt.replace(/```json|```/g, '').trim());
+    });
   });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.error?.message || `API error ${res.status}`);
-  }
-  const data = await res.json();
-  const text = data.content?.find(b => b.type === 'text')?.text || '{}';
-  return JSON.parse(text.replace(/```json|```/g, '').trim());
 }
 
-// ── SETTINGS VIEW ──
-function SettingsView({ onBack }) {
-  const [key, setKey] = useState(localStorage.getItem('anthropic_key') || '');
-  const [saved, setSaved] = useState(false);
-  const save = () => {
-    localStorage.setItem('anthropic_key', key.trim());
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-  };
-  return React.createElement('div', { className: 'app' },
-    React.createElement('button', { className: 'back-btn', onClick: onBack }, '← Back'),
-    React.createElement('h2', null, 'Settings'),
-    React.createElement('p', { style: { fontSize: 14, color: '#6b6b67', marginTop: 8, marginBottom: 20 } },
-      'Your API key is stored only on this device and is never shared.'
-    ),
-    React.createElement('div', { className: 'section-label', style: { marginTop: 0 } }, 'Anthropic API Key'),
-    React.createElement('input', {
-      type: 'password', value: key, placeholder: 'sk-ant-...',
-      onChange: e => setKey(e.target.value)
-    }),
-    React.createElement('div', { style: { marginTop: 10 } },
-      React.createElement('button', { className: 'primary', onClick: save },
-        saved ? '✓ Saved' : 'Save key'
-      )
-    ),
-    React.createElement('div', { className: 'divider', style: { marginTop: 24 } }),
-    React.createElement('p', { style: { fontSize: 13, color: '#6b6b67', lineHeight: 1.6 } },
-      'Don\'t have a key? Go to console.anthropic.com → API Keys → Create key.'
-    )
+function TrendChart(props) {
+  var mkey = props.mkey;
+  var data = props.data;
+  var canvasRef = useRef(null);
+  var chartRef = useRef(null);
+
+  useEffect(function() {
+    if (!canvasRef.current || !data.length) return;
+    if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; }
+    var m = M[mkey];
+    var vals = data.map(function(d){ return d.value; });
+    var mn = Math.min.apply(null, vals);
+    var mx = Math.max.apply(null, vals);
+    var pad = ((mx - mn) * 0.4) || 20;
+    var yMin = Math.max(0, parseFloat((mn - pad).toFixed(m.d)));
+    var yMax = parseFloat((mx + pad).toFixed(m.d));
+    var datasets = [{
+      data: vals,
+      borderColor: '#1D9E75',
+      borderWidth: 2.5,
+      pointBackgroundColor: data.map(function(d){ return d.st === 'ok' ? '#1D9E75' : '#c0392b'; }),
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: 5,
+      tension: 0.3,
+      fill: false
+    }];
+    if (m.lo != null) {
+      datasets.push({data:data.map(function(){ return m.lo; }),borderColor:'#c0392b',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false});
+    }
+    if (m.hi != null) {
+      datasets.push({data:data.map(function(){ return m.hi; }),borderColor:'#c0392b',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false});
+    }
+    chartRef.current = new Chart(canvasRef.current, {
+      type: 'line',
+      data: { labels: data.map(function(d){ return d.date; }), datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            filter: function(item){ return item.datasetIndex === 0; },
+            callbacks: { label: function(ctx){ return Number(ctx.parsed.y).toFixed(m.d) + ' ' + m.u; } }
+          }
+        },
+        scales: {
+          x: { ticks: { color:'#aaa', font:{size:10} }, grid: { color:'rgba(0,0,0,0.05)' } },
+          y: { min:yMin, max:yMax, ticks: { color:'#aaa', font:{size:10} }, grid: { color:'rgba(0,0,0,0.05)' } }
+        }
+      }
+    });
+    return function() { if (chartRef.current) { chartRef.current.destroy(); chartRef.current = null; } };
+  }, [mkey, data.length]);
+
+  return el('canvas', { ref: canvasRef });
+}
+
+function Settings(props) {
+  var s = useState(getKey()); var k = s[0]; var setK = s[1];
+  var s2 = useState(false);  var saved = s2[0]; var setSaved = s2[1];
+  function saveKey() { setKey(k.trim()); setSaved(true); setTimeout(function(){ setSaved(false); }, 2000); }
+  return el('div', {className:'app'},
+    el('button', {className:'back', onClick:props.onBack}, '← Back'),
+    el('h2', null, 'Settings'),
+    el('p', {style:{fontSize:13,color:'#666',margin:'8px 0 20px'}}, 'Your API key is stored only on this device.'),
+    el('div', {className:'lbl', style:{marginTop:0}}, 'Anthropic API Key'),
+    el('input', {type:'password', value:k, placeholder:'sk-ant-...', onChange:function(e){ setK(e.target.value); }}),
+    el('div', {style:{marginTop:10}}, el('button', {className:'primary', onClick:saveKey}, saved ? '✓ Saved' : 'Save key')),
+    el('div', {className:'divider'}),
+    el('p', {style:{fontSize:13,color:'#666',lineHeight:1.6}}, "No key yet? Go to console.anthropic.com → API Keys → Create Key.")
   );
 }
 
-// ── DETAIL VIEW ──
-function DetailView({ mkey, sessions, onBack }) {
-  const m = MARKERS[mkey];
-  const sorted = [...sessions].sort((a,b) => a.date.localeCompare(b.date));
-  const chartData = sorted.filter(s => s.values[mkey] != null).map(s => ({
-    date: fmtDate(s.date), value: s.values[mkey], status: getStatus(mkey, s.values[mkey])
-  }));
-  const vals = chartData.map(d => d.value);
-  const mn = vals.length ? Math.min(...vals) : 0;
-  const mx = vals.length ? Math.max(...vals) : 100;
-  const pad = (mx - mn) * 0.4 || 20;
-  const yMin = Math.max(0, parseFloat((mn - pad).toFixed(m.dec)));
-  const yMax = parseFloat((mx + pad).toFixed(m.dec));
-
-  const rangeStr = m.low != null && m.high != null ? `${m.low}–${m.high} ${m.unit}`
-    : m.low == null && m.high != null ? `<${m.high} ${m.unit}`
-    : `>${m.low} ${m.unit}`;
-
-  return React.createElement('div', { className: 'app' },
-    React.createElement('button', { className: 'back-btn', onClick: onBack }, '← Back'),
-    React.createElement('div', { className: 'flex-between' },
-      React.createElement('h2', null, m.label),
-      React.createElement('span', { style: { fontSize: 12, color: '#6b6b67', fontFamily: 'monospace' } }, rangeStr)
+function Detail(props) {
+  var mkey = props.mkey;
+  var m = M[mkey];
+  var sorted = props.sessions.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+  var data = sorted.filter(function(s){ return s.values[mkey] != null; }).map(function(s){
+    return { date:fmtDate(s.date), value:s.values[mkey], st:getStatus(mkey, s.values[mkey]) };
+  });
+  var rng = m.lo != null && m.hi != null ? m.lo+'–'+m.hi+' '+m.u : m.lo == null ? '<'+m.hi+' '+m.u : '>'+m.lo+' '+m.u;
+  return el('div', {className:'app'},
+    el('button', {className:'back', onClick:props.onBack}, '← Back'),
+    el('div', {className:'between', style:{marginBottom:4}},
+      el('h2', null, m.l),
+      el('span', {style:{fontSize:11,color:'#888',fontFamily:'monospace'}}, rng)
     ),
-    React.createElement('p', { style: { fontSize: 12, color: '#9a9a96', marginTop: 3 } }, m.cat),
-
-    chartData.length === 0
-      ? React.createElement('div', { className: 'empty-state', style: { marginTop: 24 } },
-          React.createElement('p', { style: { color: '#6b6b67', fontSize: 14 } }, 'No data yet for this marker.')
-        )
-      : React.createElement('div', null,
-          React.createElement('div', { style: { height: 200, marginTop: 20 } },
-            React.createElement(ResponsiveContainer, { width: '100%', height: '100%' },
-              React.createElement(LineChart, { data: chartData, margin: { top: 10, right: 16, left: -16, bottom: 0 } },
-                React.createElement(CartesianGrid, { strokeDasharray: '3 3', stroke: 'rgba(0,0,0,0.06)' }),
-                React.createElement(XAxis, { dataKey: 'date', tick: { fontSize: 10, fill: '#9a9a96' } }),
-                React.createElement(YAxis, { domain: [yMin, yMax], tick: { fontSize: 10, fill: '#9a9a96' } }),
-                React.createElement(Tooltip, {
-                  contentStyle: { background: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, fontSize: 12 },
-                  formatter: v => [`${Number(v).toFixed(m.dec)} ${m.unit}`, m.label]
-                }),
-                m.low != null && React.createElement(ReferenceLine, { y: m.low, stroke: '#D85A30', strokeDasharray: '4 3', strokeWidth: 1,
-                  label: { value: 'low', fontSize: 9, fill: '#D85A30', position: 'insideBottomRight' } }),
-                m.high != null && React.createElement(ReferenceLine, { y: m.high, stroke: '#D85A30', strokeDasharray: '4 3', strokeWidth: 1,
-                  label: { value: 'high', fontSize: 9, fill: '#D85A30', position: 'insideTopRight' } }),
-                React.createElement(Line, {
-                  type: 'monotone', dataKey: 'value', stroke: '#1D9E75', strokeWidth: 2.5,
-                  dot: (props) => {
-                    const { cx, cy, payload, index } = props;
-                    const col = payload.status === 'normal' ? '#1D9E75' : '#D85A30';
-                    return React.createElement('circle', { key: 'd' + index, cx, cy, r: 5, fill: col, stroke: '#fff', strokeWidth: 2 });
-                  },
-                  activeDot: { r: 6 }
-                })
-              )
-            )
-          ),
-          React.createElement('div', { style: { marginTop: 20, borderRadius: 12, border: '1px solid rgba(0,0,0,0.08)', overflow: 'hidden' } },
-            [...chartData].reverse().map((d, i) =>
-              React.createElement('div', { key: i, style: {
-                display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                padding: '12px 16px', background: '#fff',
-                borderBottom: i < chartData.length - 1 ? '1px solid rgba(0,0,0,0.07)' : 'none'
-              }},
-                React.createElement('span', { style: { fontSize: 14, color: '#6b6b67' } }, d.date),
-                React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
-                  React.createElement('span', { className: 'mono', style: { fontSize: 15, fontWeight: 600 } },
-                    `${Number(d.value).toFixed(m.dec)} ${m.unit}`
-                  ),
-                  React.createElement('span', { className: 'badge ' + (d.status === 'normal' ? 'badge-green' : 'badge-red') },
-                    d.status === 'normal' ? '✓ in range' : d.status.toUpperCase()
-                  )
+    el('p', {style:{fontSize:12,color:'#aaa',marginBottom:20}}, m.c),
+    data.length === 0
+      ? el('div', {className:'empty'}, el('p', {style:{color:'#888',fontSize:14}}, 'No data yet for this marker.'))
+      : el('div', null,
+          el('div', {className:'chart-wrap'}, el(TrendChart, {mkey:mkey, data:data})),
+          el('div', {className:'hist'},
+            data.slice().reverse().map(function(d,i){
+              return el('div', {key:i, className:'hist-row'},
+                el('span', {style:{fontSize:14,color:'#666'}}, d.date),
+                el('div', {style:{display:'flex',alignItems:'center',gap:8}},
+                  el('span', {className:'mono', style:{fontSize:15,fontWeight:600}}, Number(d.value).toFixed(m.d)+' '+m.u),
+                  el('span', {className:'badge '+(d.st==='ok'?'ok':'out')}, d.st==='ok'?'✓ in range':d.st.toUpperCase())
                 )
-              )
-            )
+              );
+            })
           )
         )
   );
 }
 
-// ── REVIEW VIEW ──
-function ReviewView({ formData, setFormData, extractedCount, onSave, onCancel }) {
-  return React.createElement('div', { className: 'app' },
-    React.createElement('button', { className: 'back-btn', onClick: onCancel }, '← Cancel'),
-    React.createElement('h2', null, 'Review extracted values'),
-    React.createElement('p', { style: { fontSize: 13, color: '#6b6b67', marginTop: 4, marginBottom: 20 } },
-      `${extractedCount} markers found — edit anything before saving`
+function Review(props) {
+  var form = props.form; var setForm = props.setForm;
+  return el('div', {className:'app'},
+    el('button', {className:'back', onClick:props.onCancel}, '← Cancel'),
+    el('h2', null, 'Review extracted values'),
+    el('p', {style:{fontSize:13,color:'#666',margin:'4px 0 20px'}}, props.count+' markers found — edit anything before saving'),
+    el('div', {style:{display:'flex',alignItems:'center',gap:12,marginBottom:24}},
+      el('label', {style:{fontSize:13,color:'#666',whiteSpace:'nowrap'}}, 'Draw date'),
+      el('input', {type:'date', value:form.date, style:{flex:1}, onChange:function(e){ setForm({date:e.target.value,values:form.values}); }})
     ),
-    React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 12, marginBottom: 24 } },
-      React.createElement('label', { style: { fontSize: 13, color: '#6b6b67', whiteSpace: 'nowrap' } }, 'Draw date'),
-      React.createElement('input', { type: 'date', value: formData.date, style: { flex: 1 },
-        onChange: e => setFormData({ ...formData, date: e.target.value }) })
-    ),
-    CATS_ORDER.map(cat => {
-      const keys = MARKERS_BY_CAT[cat];
-      const catExtracted = keys.filter(k => formData.values[k] != null && formData.values[k] !== '').length;
-      return React.createElement('div', { key: cat, style: { marginBottom: 20 } },
-        React.createElement('div', { style: { display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 } },
-          React.createElement('p', { className: 'section-label', style: { marginBottom: 0 } }, cat),
-          catExtracted > 0 && React.createElement('span', { className: 'badge badge-green' }, `+${catExtracted}`)
+    CATS.map(function(cat){
+      var keys = BY_CAT[cat];
+      var n = keys.filter(function(k){ return form.values[k]!=null && form.values[k]!==''; }).length;
+      return el('div', {key:cat, style:{marginBottom:20}},
+        el('div', {style:{display:'flex',alignItems:'center',gap:8,marginBottom:8}},
+          el('div', {className:'lbl', style:{marginBottom:0}}, cat),
+          n > 0 ? el('span', {className:'badge ok'}, '+'+n) : null
         ),
-        React.createElement('div', { className: 'grid-2' },
-          keys.map(key => {
-            const extracted = formData.values[key] != null && formData.values[key] !== '';
-            return React.createElement('div', { key, style: {
-              background: '#fff',
-              border: `1px solid ${extracted ? '#1D9E75' : 'rgba(0,0,0,0.1)'}`,
-              borderRadius: 8, padding: '10px 12px',
-              opacity: extracted ? 1 : 0.55
-            }},
-              React.createElement('label', { style: { fontSize: 10, color: '#6b6b67', display: 'flex', justifyContent: 'space-between' } },
-                MARKERS[key].label,
-                extracted && React.createElement('span', { style: { color: '#1D9E75' } }, '✓')
-              ),
-              React.createElement('div', { style: { fontSize: 10, color: '#9a9a96', marginBottom: 4 } }, MARKERS[key].unit),
-              React.createElement('input', { type: 'number', step: 'any', placeholder: '—',
-                value: formData.values[key] || '',
-                onChange: e => setFormData({ ...formData, values: { ...formData.values, [key]: e.target.value } })
-              })
+        el('div', {className:'g2'},
+          keys.map(function(k){
+            var hasVal = form.values[k]!=null && form.values[k]!=='';
+            return el('div', {key:k, className:'field '+(hasVal?'ex':''), style:{opacity:hasVal?1:0.5}},
+              el('label', null, el('span',null,M[k].l), hasVal?el('span',{style:{color:'#1D9E75'}},'✓'):null),
+              el('div', {className:'unit'}, M[k].u),
+              el('input', {type:'number',step:'any',placeholder:'—',value:form.values[k]||'',
+                onChange:function(e){ var v=Object.assign({},form.values); v[k]=e.target.value; setForm({date:form.date,values:v}); }})
             );
           })
         )
       );
     }),
-    React.createElement('div', { style: { display: 'flex', gap: 8, marginTop: 8, paddingBottom: 32 } },
-      React.createElement('button', { className: 'primary', onClick: onSave, disabled: !formData.date }, 'Save session'),
-      React.createElement('button', { onClick: onCancel }, 'Cancel')
+    el('div', {style:{display:'flex',gap:8,marginTop:8}},
+      el('button', {className:'primary', onClick:props.onSave, disabled:!form.date}, 'Save session'),
+      el('button', {onClick:props.onCancel}, 'Cancel')
     )
   );
 }
 
-// ── MANUAL ADD VIEW ──
-function AddView({ formData, setFormData, onSave, onCancel }) {
-  return React.createElement('div', { className: 'app' },
-    React.createElement('button', { className: 'back-btn', onClick: onCancel }, '← Cancel'),
-    React.createElement('h2', null, 'Add lab session'),
-    React.createElement('div', { style: { marginBottom: 24, marginTop: 16 } },
-      React.createElement('label', { style: { fontSize: 13, color: '#6b6b67', display: 'block', marginBottom: 6 } }, 'Draw date'),
-      React.createElement('input', { type: 'date', value: formData.date,
-        onChange: e => setFormData({ ...formData, date: e.target.value }) })
+function Add(props) {
+  var form = props.form; var setForm = props.setForm;
+  return el('div', {className:'app'},
+    el('button', {className:'back', onClick:props.onCancel}, '← Cancel'),
+    el('h2', null, 'Add lab session'),
+    el('div', {style:{margin:'16px 0 24px'}},
+      el('label', {style:{fontSize:13,color:'#666',display:'block',marginBottom:6}}, 'Draw date'),
+      el('input', {type:'date', value:form.date, onChange:function(e){ setForm({date:e.target.value,values:form.values}); }})
     ),
-    CATS_ORDER.map(cat =>
-      React.createElement('div', { key: cat, style: { marginBottom: 20 } },
-        React.createElement('p', { className: 'section-label' }, cat),
-        React.createElement('div', { className: 'grid-2' },
-          MARKERS_BY_CAT[cat].map(key =>
-            React.createElement('div', { key, style: { background: '#fff', border: '1px solid rgba(0,0,0,0.1)', borderRadius: 8, padding: '10px 12px' } },
-              React.createElement('label', { style: { fontSize: 10, color: '#6b6b67', display: 'block' } }, MARKERS[key].label),
-              React.createElement('div', { style: { fontSize: 10, color: '#9a9a96', marginBottom: 4 } }, MARKERS[key].unit),
-              React.createElement('input', { type: 'number', step: 'any', placeholder: '—',
-                value: formData.values[key] || '',
-                onChange: e => setFormData({ ...formData, values: { ...formData.values, [key]: e.target.value } })
-              })
-            )
-          )
+    CATS.map(function(cat){
+      return el('div', {key:cat, style:{marginBottom:20}},
+        el('div', {className:'lbl'}, cat),
+        el('div', {className:'g2'},
+          BY_CAT[cat].map(function(k){
+            return el('div', {key:k, className:'field'},
+              el('label', null, el('span',null,M[k].l)),
+              el('div', {className:'unit'}, M[k].u),
+              el('input', {type:'number',step:'any',placeholder:'—',value:form.values[k]||'',
+                onChange:function(e){ var v=Object.assign({},form.values); v[k]=e.target.value; setForm({date:form.date,values:v}); }})
+            );
+          })
         )
-      )
-    ),
-    React.createElement('div', { style: { display: 'flex', gap: 8, marginTop: 8, paddingBottom: 32 } },
-      React.createElement('button', { className: 'primary', onClick: onSave, disabled: !formData.date }, 'Save session'),
-      React.createElement('button', { onClick: onCancel }, 'Cancel')
+      );
+    }),
+    el('div', {style:{display:'flex',gap:8,marginTop:8}},
+      el('button', {className:'primary', onClick:props.onSave, disabled:!form.date}, 'Save session'),
+      el('button', {onClick:props.onCancel}, 'Cancel')
     )
   );
 }
 
-// ── MAIN APP ──
 function App() {
-  const [sessions, setSessions]   = useState(() => JSON.parse(localStorage.getItem('lab_sessions') || '[]'));
-  const [view, setView]           = useState('dashboard');
-  const [selMarker, setSelMarker] = useState(null);
-  const [activeCat, setActiveCat] = useState('All');
-  const [formData, setFormData]   = useState({ date: '', values: {} });
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(null);
-  const [extractedCount, setExtractedCount] = useState(0);
-  const fileRef = useRef();
+  var s1=useState(getSessions()); var sessions=s1[0]; var setSessions=s1[1];
+  var s2=useState('dash');        var view=s2[0];     var setView=s2[1];
+  var s3=useState(null);          var sel=s3[0];      var setSel=s3[1];
+  var s4=useState('All');         var cat=s4[0];      var setCat=s4[1];
+  var s5=useState({date:'',values:{}}); var form=s5[0]; var setForm=s5[1];
+  var s6=useState(false);         var busy=s6[0];     var setBusy=s6[1];
+  var s7=useState(null);          var err=s7[0];      var setErr=s7[1];
+  var s8=useState(0);             var count=s8[0];    var setCount=s8[1];
+  var fref=useRef(null);
 
-  const persist = (s) => {
-    setSessions(s);
-    localStorage.setItem('lab_sessions', JSON.stringify(s));
-  };
+  function persist(arr){ setSessions(arr); saveSessions(arr); }
 
-  const sorted     = [...sessions].sort((a,b) => a.date.localeCompare(b.date));
-  const latest     = sorted[sorted.length - 1];
-  const prev       = sorted[sorted.length - 2];
-  const allKeys    = Object.keys(MARKERS);
-  const tracked    = latest ? allKeys.filter(k => latest.values[k] != null).length : 0;
-  const outOfRange = latest ? allKeys.filter(k => latest.values[k] != null && getStatus(k, latest.values[k]) !== 'normal').length : 0;
+  var sorted=sessions.slice().sort(function(a,b){ return a.date.localeCompare(b.date); });
+  var latest=sorted[sorted.length-1];
+  var prev=sorted[sorted.length-2];
+  var allKeys=Object.keys(M);
+  var tracked=latest?allKeys.filter(function(k){ return latest.values[k]!=null; }).length:0;
+  var oor=latest?allKeys.filter(function(k){ return latest.values[k]!=null&&getStatus(k,latest.values[k])!=='ok'; }).length:0;
 
-  const handleFile = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    e.target.value = '';
-    const apiKey = localStorage.getItem('anthropic_key');
-    if (!apiKey) { setUploadError('Add your Anthropic API key in Settings first.'); return; }
-    setUploadError(null);
-    setUploading(true);
-    try {
-      const base64 = await new Promise((res, rej) => {
-        const r = new FileReader();
-        r.onload = () => res(r.result.split(',')[1]);
-        r.onerror = () => rej(new Error('Read failed'));
-        r.readAsDataURL(file);
-      });
-      const extracted = await callClaude(base64, file.type, apiKey);
-      const strVals = {};
-      Object.entries(extracted.values || {}).forEach(([k, v]) => {
-        if (MARKERS[k] && typeof v === 'number') strVals[k] = String(v);
-      });
-      setExtractedCount(Object.keys(strVals).length);
-      setFormData({ date: extracted.date || new Date().toISOString().split('T')[0], values: strVals });
-      setView('review');
-    } catch(err) {
-      setUploadError('Could not parse report: ' + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
+  function onFile(e){
+    var file=e.target.files[0]; if(!file) return;
+    e.target.value='';
+    var apiKey=getKey();
+    if(!apiKey){ setErr('Add your Anthropic API key in Settings first.'); return; }
+    setErr(null); setBusy(true);
+    var reader=new FileReader();
+    reader.onload=function(){
+      var b64=reader.result.split(',')[1];
+      callAPI(b64,file.type,apiKey).then(function(extracted){
+        var vals={};
+        Object.keys(extracted.values||{}).forEach(function(k){
+          var v=extracted.values[k];
+          if(M[k]&&typeof v==='number') vals[k]=String(v);
+        });
+        setCount(Object.keys(vals).length);
+        setForm({date:extracted.date||new Date().toISOString().split('T')[0],values:vals});
+        setView('review'); setBusy(false);
+      }).catch(function(ex){ setErr('Could not parse: '+ex.message); setBusy(false); });
+    };
+    reader.onerror=function(){ setErr('Could not read file.'); setBusy(false); };
+    reader.readAsDataURL(file);
+  }
 
-  const saveSession = () => {
-    if (!formData.date) return;
-    const vals = {};
-    Object.entries(formData.values).forEach(([k, v]) => {
-      if (v !== '' && v != null) vals[k] = parseFloat(v);
-    });
-    persist(sessions.filter(s => s.date !== formData.date).concat([{ id: Date.now(), date: formData.date, values: vals }]));
-    setView('dashboard');
-    setFormData({ date: '', values: {} });
-    setExtractedCount(0);
-  };
+  function saveSession(){
+    if(!form.date) return;
+    var vals={};
+    Object.keys(form.values).forEach(function(k){ var v=form.values[k]; if(v!=null&&v!=='') vals[k]=parseFloat(v); });
+    var updated=sessions.filter(function(s){ return s.date!==form.date; });
+    updated.push({id:Date.now(),date:form.date,values:vals});
+    persist(updated); setView('dash'); setForm({date:'',values:{}}); setCount(0);
+  }
 
-  const cancelForm = () => { setView('dashboard'); setFormData({ date: '', values: {} }); setExtractedCount(0); };
+  function cancel(){ setView('dash'); setForm({date:'',values:{}}); setCount(0); }
+  function deleteSession(id){ persist(sessions.filter(function(s){ return s.id!==id; })); }
 
-  if (view === 'settings') return React.createElement(SettingsView, { onBack: () => setView('dashboard') });
-  if (view === 'detail') return React.createElement(DetailView, { mkey: selMarker, sessions, onBack: () => setView('dashboard') });
-  if (view === 'review') return React.createElement(ReviewView, { formData, setFormData, extractedCount, onSave: saveSession, onCancel: cancelForm });
-  if (view === 'add') return React.createElement(AddView, { formData, setFormData, onSave: saveSession, onCancel: cancelForm });
+  if(view==='settings') return el(Settings,{onBack:function(){ setView('dash'); }});
+  if(view==='detail')   return el(Detail,  {mkey:sel,sessions:sessions,onBack:function(){ setView('dash'); }});
+  if(view==='review')   return el(Review,  {form:form,setForm:setForm,count:count,onSave:saveSession,onCancel:cancel});
+  if(view==='add')      return el(Add,     {form:form,setForm:setForm,onSave:saveSession,onCancel:cancel});
 
-  // Dashboard
-  const filteredKeys = activeCat === 'All' ? allKeys : MARKERS_BY_CAT[activeCat] || allKeys;
+  var keys=cat==='All'?allKeys:(BY_CAT[cat]||allKeys);
 
-  return React.createElement('div', { className: 'app' },
-    React.createElement('input', { type: 'file', ref: fileRef, accept: 'application/pdf,image/*', style: { display: 'none' }, onChange: handleFile }),
-
-    // Header
-    React.createElement('div', { className: 'flex-between', style: { marginBottom: 4 } },
-      React.createElement('h1', null, 'Lab Panel'),
-      React.createElement('button', { onClick: () => setView('settings'), style: { border: 'none', background: 'none', fontSize: 20, padding: 4, color: '#6b6b67' } }, '⚙')
+  return el('div', {className:'app'},
+    el('input',{type:'file',ref:fref,accept:'application/pdf,image/*',style:{display:'none'},onChange:onFile}),
+    el('div',{className:'between',style:{marginBottom:4}},
+      el('h1',null,'Lab Panel'),
+      el('button',{onClick:function(){ setView('settings'); },style:{border:'none',background:'none',fontSize:22,padding:4,color:'#888',cursor:'pointer'}},'⚙')
     ),
-    latest
-      ? React.createElement('p', { style: { fontSize: 13, color: '#6b6b67', marginBottom: 16 } }, `Last draw: ${fmtDate(latest.date)} · ${sessions.length} session${sessions.length !== 1 ? 's' : ''}`)
-      : React.createElement('p', { style: { fontSize: 13, color: '#9a9a96', marginBottom: 16 } }, 'No sessions yet'),
-
-    // Action buttons
-    React.createElement('div', { style: { display: 'flex', gap: 8, marginBottom: 20 } },
-      React.createElement('button', {
-        className: 'primary',
-        onClick: () => fileRef.current.click(),
-        disabled: uploading,
-        style: { flex: 1, fontSize: 15, padding: '11px 16px' }
-      }, uploading
-        ? React.createElement('span', null, React.createElement('span', { className: 'loader' }), '  Parsing...')
-        : '⬆ Upload Report'
-      ),
-      React.createElement('button', { onClick: () => setView('add'), style: { padding: '11px 14px' } }, '+ Manual')
+    el('p',{style:{fontSize:13,color:'#888',marginBottom:16}},
+      latest?'Last draw: '+fmtDate(latest.date)+' · '+sessions.length+' session'+(sessions.length!==1?'s':''):'No sessions yet'
     ),
-
-    // Error
-    uploadError && React.createElement('div', { style: { background: '#FAECE7', border: '1px solid #D85A30', borderRadius: 8, padding: '10px 14px', marginBottom: 16, fontSize: 13, color: '#993C1D', display: 'flex', justifyContent: 'space-between' } },
-      React.createElement('span', null, uploadError),
-      React.createElement('button', { onClick: () => setUploadError(null), style: { background: 'none', border: 'none', color: '#993C1D', fontSize: 18, cursor: 'pointer', padding: 0 } }, '×')
+    el('div',{style:{display:'flex',gap:8,marginBottom:20}},
+      el('button',{className:'primary',disabled:busy,style:{flex:1,fontSize:15,padding:'11px 16px'},onClick:function(){ fref.current.click(); }},
+        busy?el('span',null,el('span',{className:'loader'}),'Parsing...'):'⬆ Upload Report'
+      ),
+      el('button',{onClick:function(){ setView('add'); },style:{padding:'11px 14px'}},'+ Manual')
     ),
-
-    // Stats (only if sessions exist)
-    sessions.length > 0 && React.createElement('div', { className: 'grid-3', style: { marginBottom: 20 } },
-      React.createElement('div', { className: 'stat-card' },
-        React.createElement('div', { className: 'mono stat-num' }, sessions.length),
-        React.createElement('div', { className: 'stat-label' }, 'draws')
-      ),
-      React.createElement('div', { className: 'stat-card' },
-        React.createElement('div', { className: 'mono stat-num' }, tracked),
-        React.createElement('div', { className: 'stat-label' }, 'markers')
-      ),
-      React.createElement('div', { className: 'stat-card', style: { background: outOfRange > 0 ? '#FAECE7' : '#E1F5EE' } },
-        React.createElement('div', { className: 'mono stat-num', style: { color: outOfRange > 0 ? '#993C1D' : '#0F6E56' } }, outOfRange),
-        React.createElement('div', { className: 'stat-label', style: { color: outOfRange > 0 ? '#993C1D' : '#0F6E56' } }, 'out of range')
+    err?el('div',{className:'errbox'},el('span',null,err),el('span',{onClick:function(){ setErr(null); },style:{cursor:'pointer',fontSize:18,marginLeft:8}},'×')):null,
+    sessions.length>0?el('div',{className:'g3',style:{marginBottom:20}},
+      el('div',{className:'stat'},el('div',{className:'mono sn'},sessions.length),el('div',{className:'sl'},'draws')),
+      el('div',{className:'stat'},el('div',{className:'mono sn'},tracked),el('div',{className:'sl'},'markers')),
+      el('div',{className:'stat',style:{background:oor>0?'#fdecea':'#e0f5ec'}},
+        el('div',{className:'mono sn',style:{color:oor>0?'#a93226':'#0a6640'}},oor),
+        el('div',{className:'sl',style:{color:oor>0?'#a93226':'#0a6640'}},'out of range')
       )
-    ),
-
-    // Empty state
-    sessions.length === 0 && React.createElement('div', { className: 'empty-state' },
-      React.createElement('div', { style: { fontSize: 40, marginBottom: 12 } }, '🧪'),
-      React.createElement('p', { style: { fontWeight: 600, fontSize: 16, marginBottom: 6 } }, 'No lab sessions yet'),
-      React.createElement('p', { style: { fontSize: 14, color: '#6b6b67' } }, 'Upload a PDF or photo of your lab report to get started.')
-    ),
-
-    // Category filter
-    sessions.length > 0 && React.createElement('div', { style: { display: 'flex', gap: 6, overflowX: 'auto', paddingBottom: 8, marginBottom: 12, scrollbarWidth: 'none' } },
-      ALL_CATS.map(cat =>
-        React.createElement('button', {
-          key: cat, className: 'chip ' + (activeCat === cat ? 'active' : ''),
-          onClick: () => setActiveCat(cat)
-        }, cat)
-      )
-    ),
-
-    // Marker grid
-    sessions.length > 0 && React.createElement('div', { className: 'grid-2', style: { paddingBottom: 32 } },
-      filteredKeys.map(key => {
-        const m = MARKERS[key];
-        const val = latest?.values[key];
-        const status = getStatus(key, val);
-        const oor = val != null && status !== 'normal';
-        let trend = null;
-        if (val != null && prev?.values[key] != null) {
-          trend = val > prev.values[key] ? '↑' : val < prev.values[key] ? '↓' : '→';
-        }
-        return React.createElement('div', {
-          key, className: 'marker-card' + (oor ? ' out-of-range' : ''),
-          onClick: () => { setSelMarker(key); setView('detail'); }
-        },
-          React.createElement('div', { className: 'flex-between', style: { marginBottom: 4 } },
-            React.createElement('span', { style: { fontSize: 11, color: '#6b6b67', lineHeight: 1.3, flex: 1 } }, m.label),
-            val != null && React.createElement('span', { className: 'badge ' + (status === 'normal' ? 'badge-green' : 'badge-red') },
-              status === 'normal' ? '✓' : status.toUpperCase()
-            )
+    ):null,
+    sessions.length===0?el('div',{className:'empty'},
+      el('div',{style:{fontSize:44,marginBottom:12}},'🧪'),
+      el('p',{style:{fontWeight:700,fontSize:16,marginBottom:6}},'No sessions yet'),
+      el('p',{style:{fontSize:14,color:'#888'}},'Upload a PDF or photo of your lab report to get started.')
+    ):null,
+    sessions.length>0?el('div',{className:'chips'},
+      ['All'].concat(CATS).map(function(c){
+        return el('button',{key:c,className:'chip '+(cat===c?'active':''),onClick:function(){ setCat(c); }},c);
+      })
+    ):null,
+    sessions.length>0?el('div',{className:'g2'},
+      keys.map(function(k){
+        var v=latest&&latest.values[k]!=null?latest.values[k]:null;
+        var st=getStatus(k,v);
+        var isOor=v!=null&&st!=='ok';
+        var pv=prev&&prev.values[k]!=null?prev.values[k]:null;
+        var tr=(v!=null&&pv!=null)?(v>pv?'↑':v<pv?'↓':'→'):null;
+        return el('div',{key:k,className:'mc'+(isOor?' oor':''),onClick:function(){ setSel(k); setView('detail'); }},
+          el('div',{className:'between',style:{marginBottom:4}},
+            el('span',{style:{fontSize:11,color:'#666',lineHeight:1.3,flex:1}},M[k].l),
+            v!=null?el('span',{className:'badge '+(st==='ok'?'ok':'out')},st==='ok'?'✓':st.toUpperCase()):null
           ),
-          React.createElement('div', { style: { display: 'flex', alignItems: 'baseline', gap: 3 } },
-            React.createElement('span', { className: 'mono', style: { fontSize: 18, fontWeight: 600, color: oor ? '#993C1D' : '#1a1a18' } },
-              val != null ? Number(val).toFixed(m.dec) : '—'
-            ),
-            val != null && React.createElement('span', { style: { fontSize: 10, color: '#9a9a96' } }, m.unit),
-            trend && React.createElement('span', { style: { fontSize: 12, color: '#9a9a96', marginLeft: 'auto' } }, trend)
+          el('div',{style:{display:'flex',alignItems:'baseline',gap:3}},
+            el('span',{className:'mono',style:{fontSize:18,fontWeight:700,color:isOor?'#a93226':'#1a1a18'}},v!=null?Number(v).toFixed(M[k].d):'—'),
+            v!=null?el('span',{style:{fontSize:10,color:'#aaa'}},M[k].u):null,
+            tr?el('span',{style:{fontSize:12,color:'#aaa',marginLeft:'auto'}},tr):null
           )
         );
       })
-    ),
-
-    // Sessions list
-    sessions.length > 0 && React.createElement('div', { style: { paddingBottom: 32 } },
-      React.createElement('div', { className: 'divider' }),
-      React.createElement('p', { className: 'section-label' }, 'Sessions'),
-      sorted.slice().reverse().map(sess =>
-        React.createElement('div', { key: sess.id, style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid rgba(0,0,0,0.06)' } },
-          React.createElement('span', { style: { fontSize: 14 } }, fmtDate(sess.date)),
-          React.createElement('div', { style: { display: 'flex', gap: 10, alignItems: 'center' } },
-            React.createElement('span', { style: { fontSize: 12, color: '#9a9a96' } }, `${Object.keys(sess.values).length} markers`),
-            React.createElement('button', { className: 'danger', style: { fontSize: 11, padding: '3px 10px' },
-              onClick: () => persist(sessions.filter(s => s.id !== sess.id))
-            }, 'Delete')
+    ):null,
+    sessions.length>0?el('div',null,
+      el('div',{className:'divider'}),
+      el('div',{className:'lbl'},'Sessions'),
+      sorted.slice().reverse().map(function(s){
+        return el('div',{key:s.id,className:'row-item'},
+          el('span',{style:{fontSize:14}},fmtDate(s.date)),
+          el('div',{style:{display:'flex',gap:10,alignItems:'center'}},
+            el('span',{style:{fontSize:12,color:'#aaa'}},Object.keys(s.values).length+' markers'),
+            el('button',{className:'danger',style:{fontSize:11,padding:'3px 10px'},onClick:function(){ deleteSession(s.id); }},'Delete')
           )
-        )
-      )
-    )
+        );
+      })
+    ):null
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+ReactDOM.createRoot(document.getElementById('root')).render(el(App));
 </script>
 </body>
 </html>
